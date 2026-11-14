@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DeepSeek AI</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css?v=11" />
+</head>
+<body>
+  <header>
+    <h1>DeepSeek AI</h1>
+    <button id="newChat" class="secondary small" title="Empezar una conversación nueva">Nuevo chat</button>
+  </header>
+
+  <details id="settings">
+    <summary>Ajustes</summary>
+    <label>Servicio
+      <select id="provider">
+        <option value="nvidia">DeepSeek vía NVIDIA (GRATIS)</option>
+        <option value="openrouter">OpenRouter (GRATIS, otros modelos)</option>
+        <option value="deepseek">DeepSeek oficial (de pago)</option>
+      </select>
+    </label>
+    <p class="hint" id="freeHint"></p>
+    <label>API key</label>
+    <div class="keyrow">
+      <input id="apiKey" type="password" placeholder="nvapi-..." autocomplete="off" />
+      <button id="pasteKey" class="secondary" title="Pegar desde el portapapeles">Pegar</button>
+    </div>
+    <p class="hint" id="fileKeyHint"></p>
+    <label>Modelo</label>
+    <input id="modelSearch" type="search" placeholder="Buscar modelo (deepseek, llama, qwen...)" autocomplete="off" />
+    <select id="model" size="8"></select>
+    <p class="hint" id="modelCount"></p>
+    <button id="saveSettings" class="secondary">Listo</button>
+    <p class="hint">Todo se guarda solo, y solo en este equipo. Con «Automático» el panel elige el modelo y cambia solo si uno va lento o falla.</p>
+  </details>
+
+  <main id="chat" aria-live="polite"></main>
+
+  <footer>
+    <div class="row chips">
+      <button class="chip" data-action="improve">Mejorar</button>
+      <button class="chip" data-action="fix">Corregir</button>
+      <button class="chip" data-action="summarize">Resumir</button>
+      <button class="chip" data-action="expand">Ampliar</button>
+      <button class="chip" data-action="formal">Más formal</button>
+      <button class="chip" data-action="translate">Traducir</button>
+    </div>
+    <div class="composer">
+      <textarea id="prompt" rows="3" placeholder="Pide lo que quieras y la IA lo hará en el documento… (Enter para enviar, Mayús+Enter para nueva línea)"></textarea>
+      <div class="composer-buttons">
+        <button id="send" class="primary">Enviar</button>
+        <button id="stop" class="secondary" hidden>Detener</button>
+      </div>
+    </div>
+    <p id="status" role="status"></p>
+    <p class="hint version">versión 11 · Ctrl+Z en el documento deshace los cambios</p>
+  </footer>
+
+  <script src="tools.js?v=11"></script>
+  <script src="taskpane.js?v=11"></script>
+</body>
+</html>
