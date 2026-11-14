@@ -39,4 +39,8 @@ footer { border-top: 1px solid var(--line); padding-top: 8px; display: flex; fle
 #status { min-height: 16px; margin: 0; color: var(--muted); font-size: 12px; }
 #status.error { color: #c0262d; }
 .version { text-align: right; margin: 0; }
+.consent { border: 1px solid var(--blue); background: #f3f5ff; border-radius: 8px; padding: 8px 10px; font-size: 12.5px; }
+.consent label { display: flex; gap: 6px; align-items: flex-start; margin: 0; font-weight: 600; }
+.consent input { margin-top: 2px; }
+.version a { color: var(--muted); }
 .tagline { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 4px; }

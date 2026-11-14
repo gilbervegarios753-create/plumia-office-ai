@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Plumia</title>
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <link rel="stylesheet" href="taskpane.css?v=12" />
+  <link rel="stylesheet" href="taskpane.css?v=13" />
 </head>
 <body>
   <header>
@@ -48,6 +48,10 @@
       <button class="chip" data-action="formal">Más formal</button>
       <button class="chip" data-action="translate">Traducir</button>
     </div>
+    <div id="consent" class="consent" hidden>
+      <label><input type="checkbox" id="consentCheck" /> Acepto los <a href="terminos.html" target="_blank" rel="noopener">Términos de uso</a> y la <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a> de Plumia.</label>
+      <p class="hint">La IA puede equivocarse: revisa lo que escribe. No envíes información confidencial.</p>
+    </div>
     <div class="composer">
       <textarea id="prompt" rows="3" placeholder="Pide lo que quieras y la IA lo hará en el documento… (Enter para enviar, Mayús+Enter para nueva línea)"></textarea>
       <div class="composer-buttons">
@@ -56,10 +60,10 @@
       </div>
     </div>
     <p id="status" role="status"></p>
-    <p class="hint version">versión 12 · Ctrl+Z en el documento deshace los cambios</p>
+    <p class="hint version">versión 13 · Ctrl+Z deshace los cambios · <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a> · <a href="terminos.html" target="_blank" rel="noopener">Términos</a> · <a href="soporte.html" target="_blank" rel="noopener">Ayuda</a></p>
   </footer>
 
-  <script src="tools.js?v=12"></script>
-  <script src="taskpane.js?v=12"></script>
+  <script src="tools.js?v=13"></script>
+  <script src="taskpane.js?v=13"></script>
 </body>
 </html>
