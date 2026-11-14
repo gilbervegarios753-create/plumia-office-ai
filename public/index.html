@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plumia — tu equipo de IA en Word, Excel, PowerPoint y Outlook</title>
+  <meta name="description" content="Plumia es un asistente de IA gratuito que trabaja directamente en tus documentos de Word, Excel, PowerPoint y Outlook: escribe, corrige, resume, traduce y da formato por ti." />
+  <link rel="icon" href="assets/icon-64.png" />
+  <link rel="stylesheet" href="legal.css" />
+  <style>
+    .hero { text-align: center; padding: 48px 20px 24px; }
+    .hero img.logo { width: 84px; height: 84px; }
+    .hero h1 { font-size: 40px; margin: 12px 0 6px; }
+    .hero p.lead { font-size: 20px; color: var(--muted); max-width: 640px; margin: 0 auto 26px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .btn { display: inline-block; padding: 12px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; border: 1px solid var(--blue); }
+    .btn.primary { background: var(--blue); color: #fff; }
+    .btn.ghost { background: #fff; color: var(--blue); }
+    .free { margin-top: 12px; font-size: 14px; color: var(--muted); }
+    .shot { max-width: 1000px; margin: 28px auto 0; padding: 0 20px; }
+    .shot img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(31, 35, 48, .18); border: 1px solid var(--line); }
+    main.wide { max-width: 1000px; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 12px 0; }
+    .feature { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .feature b { display: block; margin-bottom: 4px; font-size: 17px; }
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .step { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+    .step h3 { margin: 0 0 8px; font-size: 18px; }
+    .step ol { margin: 0; padding-left: 20px; }
+    .step li { margin: 4px 0; }
+    code { background: #f1f3f9; padding: 1px 5px; border-radius: 4px; font-size: 14px; word-break: break-all; }
+    .note { font-size: 14px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header><div class="wrap">
+    <a class="brand" href="./">✒️ Plumia</a>
+    <nav><a href="#instalar">Instalar</a><a href="soporte.html">Ayuda</a><a href="privacidad.html">Privacidad</a><a href="terminos.html">Términos</a></nav>
+  </div></header>
+
+  <section class="hero">
+    <img class="logo" src="assets/icon-128.png" alt="Logo de Plumia" />
+    <h1>Tu equipo de IA dentro de Office</h1>
+    <p class="lead">Escribe lo que quieres y Plumia lo hace en tu documento de <b>Word</b>, <b>Excel</b>, <b>PowerPoint</b> u <b>Outlook</b>. Sin copiar ni pegar.</p>
+    <div class="cta">
+      <a class="btn primary" href="descargas/instalar-plumia.ps1" download>⬇️ Instalar en Windows</a>
+      <a class="btn ghost" href="#web-mac">Word en la web o Mac</a>
+      <a class="btn ghost" href="#outlook">Outlook</a>
+      <a class="btn ghost" href="#empresas">Empresas y colegios</a>
+    </div>
+    <p class="free">Gratis · funciona con tu clave gratuita de NVIDIA u OpenRouter · no guarda tus documentos</p>
+  </section>
+
+  <div class="shot"><img src="assets/captura-1.png" alt="Plumia escribiendo un informe en Word con un equipo de agentes" width="1366" height="768" /></div>
+
+  <main class="wide">
+    <h2>Qué hace Plumia</h2>
+    <div class="features">
+      <div class="feature"><b>✍️ Escribe por ti</b>Informes, ensayos, cartas y correos con títulos, listas y tablas, directamente en el documento.</div>
+      <div class="feature"><b>✅ Corrige y mejora</b>Ortografía, gramática y estilo. Resume, amplía, traduce o hazlo más formal con un clic.</div>
+      <div class="feature"><b>👥 Equipo de agentes</b>Las tareas grandes se reparten entre varios agentes que escriben a la vez.</div>
+      <div class="feature"><b>⚡ Siempre disponible</b>Si un modelo va lento o está saturado, Plumia cambia sola a otro. Más de 400 modelos.</div>
+      <div class="feature"><b>📊 Excel y PowerPoint</b>Tablas con fórmulas y formato, y diapositivas completas con título y contenido.</div>
+      <div class="feature"><b>🔒 Privada</b>Sin cuentas ni cookies. Tu clave se guarda solo en tu equipo. Deshaz todo con Ctrl+Z.</div>
+    </div>
+
+    <h2 id="instalar">Cómo instalar Plumia</h2>
+    <div class="steps">
+      <div class="step" id="windows">
+        <h3>🪟 Windows (Word, Excel, PowerPoint)</h3>
+        <ol>
+          <li>Descarga el <a href="descargas/instalar-plumia.ps1" download>instalador</a>.</li>
+          <li>Clic derecho en <code>instalar-plumia.ps1</code> → <b>Ejecutar con PowerShell</b>.</li>
+          <li>Cierra Word y vuelve a abrirlo.</li>
+          <li><b>Inicio → Complementos → Más complementos → CARPETA COMPARTIDA → Plumia → Agregar</b>.</li>
+        </ol>
+        <p class="note">Si Windows avisa de que el archivo viene de internet, pulsa «Abrir» o «Ejecutar de todos modos». No instala programas: solo registra Plumia en Office.</p>
+      </div>
+      <div class="step" id="web-mac">
+        <h3>🌐 Word en la web y 🍎 Mac</h3>
+        <ol>
+          <li>Descarga <a href="descargas/plumia.xml" download>plumia.xml</a>.</li>
+          <li>En Word: <b>Insertar → Complementos → Mis complementos</b> (o <b>Más complementos</b>).</li>
+          <li>Elige <b>Cargar mi complemento</b> y selecciona <code>plumia.xml</code>.</li>
+        </ol>
+        <p class="note">Sirve igual para Excel y PowerPoint.</p>
+      </div>
+      <div class="step" id="outlook">
+        <h3>✉️ Outlook</h3>
+        <ol>
+          <li>Descarga <a href="descargas/plumia-outlook.xml" download>plumia-outlook.xml</a>.</li>
+          <li>En Outlook: <b>Obtener complementos → Mis complementos</b>.</li>
+          <li><b>Agregar un complemento personalizado → Desde archivo</b> → elige <code>plumia-outlook.xml</code>.</li>
+        </ol>
+        <p class="note">En Outlook en la web: <a href="https://aka.ms/olksideload" rel="noopener">aka.ms/olksideload</a>.</p>
+      </div>
+      <div class="step" id="empresas">
+        <h3>🏢 Empresas y colegios</h3>
+        <ol>
+          <li>Entra en el <b>Centro de administración de Microsoft 365</b>.</li>
+          <li><b>Configuración → Aplicaciones integradas → Cargar aplicaciones personalizadas</b>.</li>
+          <li>Elige «Proporcionar vínculo al archivo de manifiesto» y pega:<br /><code>https://plumia-office-ai.vercel.app/descargas/plumia.xml</code></li>
+          <li>Asigna Plumia a los usuarios o grupos que quieras.</li>
+        </ol>
+        <p class="note">Plumia aparecerá sola en Office para todos ellos, sin que tengan que instalar nada.</p>
+      </div>
+    </div>
+
+    <h2>Después de instalar: tu clave gratis</h2>
+    <div class="box">
+      <ol>
+        <li>Abre <b>Plumia</b> desde la pestaña <b>Inicio</b> y acepta los términos.</li>
+        <li>Consigue una clave gratuita en <a href="https://build.nvidia.com" rel="noopener">build.nvidia.com</a> (<b>Get API Key</b>, empieza por <code>nvapi-</code>) o en <a href="https://openrouter.ai" rel="noopener">openrouter.ai</a> (<b>Keys</b>, empieza por <code>sk-or-</code>).</li>
+        <li>En Plumia, abre <b>Ajustes</b>, elige el servicio y pega la clave. ¡Listo!</li>
+      </ol>
+    </div>
+    <p>¿Dudas? Mira la <a href="soporte.html">página de ayuda</a> o escribe a <a href="mailto:gilbervegarios753@gmail.com">gilbervegarios753@gmail.com</a>.</p>
+  </main>
+
+  <footer><div class="wrap">© 2026 Plumia · <a href="privacidad.html">Política de privacidad</a> · <a href="terminos.html">Términos de uso</a> · <a href="soporte.html">Soporte</a> · <a href="https://github.com/gilbervegarios753-create/plumia-office-ai" rel="noopener">GitHub</a></div></footer>
+</body>
+</html>
