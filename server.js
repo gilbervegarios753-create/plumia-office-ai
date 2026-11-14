@@ -137,18 +137,20 @@ async function proxyChat(req, res) {
     if (!upstream.ok) {
       const text = await upstream.text();
       log("  error body: " + text.slice(0, 500));
-      res.writeHead(upstream.status, { "Content-Type": "application/json" });
       let original = text.slice(0, 300);
       try { const j = JSON.parse(text); original = j.error?.message || j.detail || j.title || original; } catch (e) { /* not json */ }
+      // NVIDIA responde 403 "Authorization failed" cuando la clave es mala: se trata como 401.
+      const status = upstream.status === 403 && /authoriz|unauthori|invalid.*(key|token)|api key/i.test(String(original)) ? 401 : upstream.status;
+      res.writeHead(status, { "Content-Type": "application/json" });
       const keyHelp = { nvidia: "build.nvidia.com → API Keys (nvapi-...)", openrouter: "openrouter.ai → Keys (sk-or-...)", deepseek: "platform.deepseek.com" }[provider];
       let message = original;
       // 401 = la clave es mala. 403 suele ser "este modelo no está permitido", no un problema de la clave.
-      if (upstream.status === 401) message = `la clave de ${provider} no es válida o está incompleta. Genera una nueva en ${keyHelp}.`;
-      else if (upstream.status === 403) message = `acceso denegado a este modelo (${original}).`;
-      else if (upstream.status === 402) message = "este modelo es de pago y no hay saldo. Se usará otro gratis.";
-      else if (upstream.status === 404) message = "ese modelo ya no está disponible.";
-      else if (upstream.status === 429) message = "modelo saturado o límite gratis alcanzado; se probará otro.";
-      return res.end(JSON.stringify({ error: { message: `Error ${upstream.status} del servicio: ${message}`, code: upstream.status } }));
+      if (status === 401) message = `la clave de ${provider} no es válida o está incompleta. Genera una nueva en ${keyHelp}.`;
+      else if (status === 403) message = `acceso denegado a este modelo (${original}).`;
+      else if (status === 402) message = "este modelo es de pago y no hay saldo. Se usará otro gratis.";
+      else if (status === 404) message = "ese modelo ya no está disponible.";
+      else if (status === 429) message = "modelo saturado o límite gratis alcanzado; se probará otro.";
+      return res.end(JSON.stringify({ error: { message: `Error ${status} del servicio: ${message}`, code: status } }));
     }
     res.writeHead(upstream.status, {
       "Content-Type": upstream.headers.get("content-type") || "application/json",

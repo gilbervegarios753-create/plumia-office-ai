@@ -74,7 +74,11 @@ async function refreshFileKeys() {
   try { fileKeys = await (await fetch("/api/keys", { cache: "no-store" })).json(); } catch (e) { fileKeys = {}; }
   const p = $("provider").value;
   const hint = $("fileKeyHint");
-  if (fileKeys[p]) {
+  if (fileKeys.cloud) {
+    // Versión en la nube: no hay archivos de clave en el equipo.
+    hint.textContent = fileKeys[p] ? "✔ Este servicio ya viene incluido: no necesitas clave." : "Pega aquí tu clave gratis: se guarda solo en este equipo.";
+    hint.className = fileKeys[p] ? "hint ok" : "hint";
+  } else if (fileKeys[p]) {
     hint.textContent = `✔ Clave encontrada en el archivo clave-${p}.txt del equipo. No hace falta pegarla aquí.`;
     hint.className = "hint ok";
   } else {
@@ -82,6 +86,8 @@ async function refreshFileKeys() {
     hint.className = "hint";
   }
 }
+// Dónde se le dice al usuario que ponga la clave (cambia entre la versión local y la de la nube).
+const keyPlace = (p) => (fileKeys.cloud ? "Ajustes → API key" : `Ajustes o en el archivo clave-${p}.txt de la carpeta DeepSeekWordAddin`);
 
 // Catálogo completo descargado del servicio (todos los modelos que existen).
 const liveModels = {};
@@ -556,7 +562,7 @@ async function checkKey() {
   let problem = "";
   const anyKey = ["nvidia", "openrouter", "deepseek"].some((p) => hasKey(p));
   if (!key && !fileKeys[prov] && anyKey) return true; // se usará otro servicio que sí tiene clave
-  if (!key && !fileKeys[prov]) problem = `No hay clave. Pégala en Ajustes o en el archivo clave-${prov}.txt de la carpeta DeepSeekWordAddin.`;
+  if (!key && !fileKeys[prov]) problem = `No hay clave. Pégala en ${keyPlace(prov)}.`;
   else if (key && key.includes("*")) problem = "Esa clave tiene asteriscos (*): es la versión tapada de la lista de NVIDIA y no sirve. Genera una nueva y copia la completa.";
   else if (key && prov === "nvidia" && (!key.startsWith("nvapi-") || key.length < 40)) problem = "La clave de NVIDIA debe empezar por nvapi- y tener unos 70 caracteres. Parece incompleta.";
   if (problem) { $("settings").open = true; setStatus(problem, true); return false; }
@@ -619,7 +625,7 @@ Office.onReady((info) => {
       setStatus("Clave pegada y guardada.");
     } catch (e) {
       $("apiKey").focus();
-      setStatus("Office no deja leer el portapapeles. Usa el archivo clave-" + $("provider").value + ".txt.", true);
+      setStatus(fileKeys.cloud ? "Office no deja leer el portapapeles: haz clic en el campo y pulsa Ctrl+V." : "Office no deja leer el portapapeles. Usa el archivo clave-" + $("provider").value + ".txt.", true);
     }
   };
   $("saveSettings").onclick = () => { autoSave(); $("settings").open = false; setStatus("Guardado."); };

@@ -46,7 +46,21 @@ Servicio de IA: NVIDIA · OpenRouter · DeepSeek
 
 ---
 
-## 📦 Instalación (Windows + Microsoft 365 / Office 2021 o superior)
+## ☁️ Instalación rápida (versión en la nube, recomendada)
+
+No necesitas instalar nada en tu PC: Plumia se sirve desde **https://plumia-office-ai.vercel.app**.
+
+1. Descarga [`manifest-cloud.xml`](manifest-cloud.xml) (Word, Excel y PowerPoint) y, si quieres Outlook, [`manifest-outlook-cloud.xml`](manifest-outlook-cloud.xml).
+2. **Word / Excel / PowerPoint en Windows:** guarda `manifest-cloud.xml` en una carpeta compartida y añádela como *Catálogo de complementos de confianza* (Archivo → Opciones → Centro de confianza → Configuración → Catálogos de complementos de confianza). Luego: **Inicio → Complementos → Más complementos → CARPETA COMPARTIDA → Plumia → Agregar**.
+   **Word en la web (Office.com) o Mac:** Insertar → Complementos → Mis complementos → *Cargar mi complemento* → elige `manifest-cloud.xml`.
+3. **Outlook:** Obtener complementos → Mis complementos → *Agregar un complemento personalizado → Desde archivo* → `manifest-outlook-cloud.xml`.
+4. Abre **Plumia**, entra en **Ajustes** y pega tu clave **gratis** (NVIDIA u OpenRouter, ver abajo).
+
+> Pronto: instalación con un clic desde **Microsoft Marketplace**.
+
+---
+
+## 📦 Instalación local (Windows, sin depender de internet para el panel)
 
 **Requisitos:** Windows 10/11, Office de escritorio y [Node.js](https://nodejs.org) 18 o superior.
 
@@ -93,7 +107,8 @@ El servidor local arranca solo al iniciar Windows.
 ## 🗺️ Hoja de ruta
 
 - [x] Renombrar la interfaz a "Plumia"
-- [ ] Versión alojada en la nube (sin servidor local) para publicarla en Microsoft AppSource
+- [x] Versión alojada en la nube (sin servidor local): https://plumia-office-ai.vercel.app
+- [ ] Publicarla en Microsoft Marketplace (AppSource)
 - [ ] Cuentas de usuario y suscripción
 - [ ] Plantillas: trabajo escolar, informe, carta formal, CV
 
