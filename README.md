@@ -46,17 +46,18 @@ Servicio de IA: NVIDIA · OpenRouter · DeepSeek
 
 ---
 
-## ☁️ Instalación rápida (versión en la nube, recomendada)
+## ☁️ Instalación rápida (recomendada)
 
-No necesitas instalar nada en tu PC: Plumia se sirve desde **https://plumia-office-ai.vercel.app**.
+Todo está en **https://plumia-office-ai.vercel.app** — la página tiene el botón de descarga y los pasos para cada caso:
 
-1. Descarga [`manifest-cloud.xml`](manifest-cloud.xml) (Word, Excel y PowerPoint) y, si quieres Outlook, [`manifest-outlook-cloud.xml`](manifest-outlook-cloud.xml).
-2. **Word / Excel / PowerPoint en Windows:** guarda `manifest-cloud.xml` en una carpeta compartida y añádela como *Catálogo de complementos de confianza* (Archivo → Opciones → Centro de confianza → Configuración → Catálogos de complementos de confianza). Luego: **Inicio → Complementos → Más complementos → CARPETA COMPARTIDA → Plumia → Agregar**.
-   **Word en la web (Office.com) o Mac:** Insertar → Complementos → Mis complementos → *Cargar mi complemento* → elige `manifest-cloud.xml`.
-3. **Outlook:** Obtener complementos → Mis complementos → *Agregar un complemento personalizado → Desde archivo* → `manifest-outlook-cloud.xml`.
-4. Abre **Plumia**, entra en **Ajustes** y pega tu clave **gratis** (NVIDIA u OpenRouter, ver abajo).
+| Dónde | Cómo |
+|---|---|
+| **Windows** (Word, Excel, PowerPoint) | Descarga [`instalar-plumia.ps1`](public/descargas/instalar-plumia.ps1) → clic derecho → *Ejecutar con PowerShell* → reabre Word → **Inicio → Complementos → Más complementos → CARPETA COMPARTIDA → Plumia → Agregar** |
+| **Word en la web / Mac** | Descarga [`plumia.xml`](public/descargas/plumia.xml) → *Insertar → Complementos → Mis complementos → Cargar mi complemento* |
+| **Outlook** | Descarga [`plumia-outlook.xml`](public/descargas/plumia-outlook.xml) → *Obtener complementos → Mis complementos → Agregar desde archivo* |
+| **Empresas y colegios** | Centro de administración de Microsoft 365 → *Aplicaciones integradas → Cargar aplicaciones personalizadas* → vínculo `https://plumia-office-ai.vercel.app/descargas/plumia.xml` |
 
-> Pronto: instalación con un clic desde **Microsoft Marketplace**.
+Después, abre **Plumia → Ajustes** y pega tu clave **gratis** (NVIDIA u OpenRouter, ver abajo). No hace falta Node.js ni certificados.
 
 ---
 

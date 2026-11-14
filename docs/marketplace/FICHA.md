@@ -6,8 +6,8 @@ Textos y archivos listos para copiar en **Microsoft Partner Center** al crear la
 
 | Qué pide Partner Center | Archivo |
 |---|---|
-| Manifiesto Word, Excel y PowerPoint | [`manifest-cloud.xml`](../../manifest-cloud.xml) |
-| Manifiesto Outlook (oferta aparte) | [`manifest-outlook-cloud.xml`](../../manifest-outlook-cloud.xml) |
+| Manifiesto Word, Excel y PowerPoint | [`public/descargas/plumia.xml`](../../public/descargas/plumia.xml) |
+| Manifiesto Outlook (oferta aparte) | [`public/descargas/plumia-outlook.xml`](../../public/descargas/plumia-outlook.xml) |
 | Logo de la tienda (PNG, 300×300) | [`public/assets/icon-300.png`](../../public/assets/icon-300.png) |
 | Captura (PNG, 1366×768) | [`captura-1.png`](captura-1.png) |
 
@@ -65,13 +65,13 @@ Partner Center tiene un campo de **notas para la certificación**. Plumia necesi
 
 1. Crea la cuenta de desarrollador en https://partner.microsoft.com (registro en el **Microsoft 365 and Copilot program**, cuenta *Individual*). La cuenta individual es gratuita.
 2. **Marketplace offers → New offer → Office add-in**. Nombre: **Plumia**.
-3. **Packages:** sube `manifest-cloud.xml`.
+3. **Packages:** sube `public/descargas/plumia.xml`.
 4. **Properties:** categorías, URLs de privacidad, términos y soporte de la tabla de arriba.
 5. **Marketplace listings → Español:** resumen, descripción, palabras clave, logo `icon-300.png` y captura `captura-1.png`.
 6. **Availability:** gratuita, todos los mercados (o los que prefieras).
 7. **Notes for certification:** el texto de arriba con la clave de prueba.
 8. **Review and publish.** La revisión de Microsoft suele tardar unos días; si algo falla, te envían un informe con los cambios necesarios.
-9. Repite para Outlook con `manifest-outlook-cloud.xml` como una oferta aparte (opcional).
+9. Repite para Outlook con `public/descargas/plumia-outlook.xml` como una oferta aparte (opcional).
 
 ## Antes de cobrar
 
