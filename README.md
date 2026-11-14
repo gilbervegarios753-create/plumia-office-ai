@@ -56,11 +56,11 @@ Servicio de IA: NVIDIA · OpenRouter · DeepSeek
    powershell -ExecutionPolicy Bypass -File setup.ps1
    ```
    Cuando Windows pregunte si confías en el certificado de `localhost`, pulsa **Sí**.
-3. Abre Word y ve a **Inicio → Complementos → Más complementos → CARPETA COMPARTIDA → DeepSeek AI for Word → Agregar** (el nombre interno se cambiará a "Plumia" en una próxima versión).
+3. Abre Word y ve a **Inicio → Complementos → Más complementos → CARPETA COMPARTIDA → Plumia → Agregar**.
 4. Consigue una clave **gratis** y pégala en el panel (**Ajustes**) o en el archivo correspondiente de `%USERPROFILE%\DeepSeekWordAddin\`:
    - **NVIDIA** (incluye DeepSeek): [build.nvidia.com](https://build.nvidia.com) → *Get API Key* → `clave-nvidia.txt`
    - **OpenRouter**: [openrouter.ai](https://openrouter.ai) → *Keys* → `clave-openrouter.txt`
-5. Pulsa **DeepSeek AI** en la pestaña **Inicio** y escribe lo que quieres.
+5. Pulsa **Plumia** en la pestaña **Inicio** y escribe lo que quieres.
 
 **Outlook:** Inicio → Obtener complementos → Mis complementos → *Agregar un complemento personalizado → Desde archivo* → elige `manifest-outlook.xml`.
 
@@ -92,7 +92,7 @@ El servidor local arranca solo al iniciar Windows.
 
 ## 🗺️ Hoja de ruta
 
-- [ ] Renombrar la interfaz a "Plumia" (hoy el panel aún dice "DeepSeek AI")
+- [x] Renombrar la interfaz a "Plumia"
 - [ ] Versión alojada en la nube (sin servidor local) para publicarla en Microsoft AppSource
 - [ ] Cuentas de usuario y suscripción
 - [ ] Plantillas: trabajo escolar, informe, carta formal, CV

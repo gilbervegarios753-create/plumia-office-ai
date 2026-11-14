@@ -1,4 +1,4 @@
-// Servidor local HTTPS para el complemento "DeepSeek AI for Word".
+// Servidor local HTTPS para el complemento "Plumia".
 // Sirve /public y reenvía /api/chat a DeepSeek (evita problemas de CORS).
 // Sin dependencias: solo Node.js.
 const https = require("https");
@@ -127,7 +127,7 @@ async function proxyChat(req, res) {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + key,
-        "X-Title": "DeepSeek AI for Word",
+        "X-Title": "Plumia",
       },
       body,
     });

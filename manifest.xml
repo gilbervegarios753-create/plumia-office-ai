@@ -5,11 +5,11 @@
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
   <Id>7c1d2a4e-5b3f-4e8a-9a61-d5e0b7f3c2a1</Id>
-  <Version>1.0.11.0</Version>
-  <ProviderName>DeepSeek AI for Word</ProviderName>
+  <Version>1.0.12.0</Version>
+  <ProviderName>Plumia</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
-  <DisplayName DefaultValue="DeepSeek AI for Word"/>
-  <Description DefaultValue="Asistente de IA con DeepSeek para Word, Excel y PowerPoint: redacta, resume, corrige y traduce."/>
+  <DisplayName DefaultValue="Plumia"/>
+  <Description DefaultValue="Plumia: tu equipo de IA dentro de Office. Redacta, corrige, da formato, crea tablas y diapositivas directamente en tu documento."/>
   <IconUrl DefaultValue="https://localhost:3443/assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3443/assets/icon-80.png"/>
   <SupportUrl DefaultValue="https://api-docs.deepseek.com"/>
@@ -22,7 +22,7 @@
     <Host Name="Presentation"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3443/taskpane.html?v=11"/>
+    <SourceLocation DefaultValue="https://localhost:3443/taskpane.html?v=12"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 
@@ -147,17 +147,17 @@
         <bt:Image id="Icon.80" DefaultValue="https://localhost:3443/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3443/taskpane.html?v=11"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3443/taskpane.html?v=12"/>
         <bt:Url id="Support.Url" DefaultValue="https://api-docs.deepseek.com"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="Group.Label" DefaultValue="DeepSeek"/>
-        <bt:String id="Button.Label" DefaultValue="DeepSeek AI"/>
-        <bt:String id="GetStarted.Title" DefaultValue="DeepSeek AI"/>
+        <bt:String id="Group.Label" DefaultValue="Plumia"/>
+        <bt:String id="Button.Label" DefaultValue="Plumia"/>
+        <bt:String id="GetStarted.Title" DefaultValue="Plumia"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="Button.Tooltip" DefaultValue="Abre el panel de DeepSeek AI para redactar, resumir, corregir y traducir."/>
-        <bt:String id="GetStarted.Description" DefaultValue="DeepSeek AI está listo. Ve a la pestaña Inicio y pulsa DeepSeek AI."/>
+        <bt:String id="Button.Tooltip" DefaultValue="Abre Plumia: tu equipo de IA que redacta, corrige, resume y traduce en tu documento."/>
+        <bt:String id="GetStarted.Description" DefaultValue="Plumia está lista. Ve a la pestaña Inicio y pulsa Plumia."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

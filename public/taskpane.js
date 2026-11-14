@@ -1,5 +1,5 @@
 /* global Office */
-// Panel de DeepSeek AI: ajustes (servicio, clave, modelos) y chat con agente.
+// Panel de Plumia: ajustes (servicio, clave, modelos) y chat con agente.
 // Las herramientas que actúan sobre el documento están en tools.js.
 const $ = (id) => document.getElementById(id);
 
@@ -168,7 +168,7 @@ function systemPrompt() {
   const app = hostName();
   const where = { Word: "el documento de Word", Excel: "el libro de Excel", PowerPoint: "la presentación de PowerPoint", Outlook: "el correo de Outlook" }[app] || "el documento";
   return [
-    `Eres DeepSeek AI, un asistente integrado en Microsoft ${app}. Trabajas directamente sobre ${where} usando las herramientas disponibles.`,
+    `Eres Plumia, un asistente integrado en Microsoft ${app}. Trabajas directamente sobre ${where} usando las herramientas disponibles.`,
     "Reglas:",
     "- Haz tú mismo los cambios con las herramientas. Nunca le pidas al usuario que copie, pegue o inserte nada.",
     "- Antes de modificar, lee el contenido (leer_documento, leer_seleccion, leer_hoja, leer_correo...) para saber qué hay y usar los índices correctos.",
@@ -418,7 +418,7 @@ async function runTeam(args) {
   if (!tareas.length) throw new Error("No se indicaron tareas.");
   addAction(`👥 Equipo de ${tareas.length} agentes trabajando a la vez: ${tareas.map((t) => t.nombre || "parte").join(", ")}`);
   const sys = [
-    `Eres un agente del equipo de DeepSeek AI dentro de Microsoft ${hostName()}.`,
+    `Eres un agente del equipo de Plumia dentro de Microsoft ${hostName()}.`,
     "Escribe SOLO el contenido pedido, listo para ponerlo en el documento, en el idioma del usuario.",
     "Texto plano: sin Markdown (#, **), sin introducciones del tipo 'Aquí tienes'. Separa párrafos con una línea en blanco.",
   ].join("\n");
@@ -579,7 +579,7 @@ function welcomeText() {
     PowerPoint: "«Crea 5 diapositivas sobre la fotosíntesis», «mejora el texto seleccionado».",
     Outlook: "«Resume este correo», «escribe una respuesta amable aceptando la reunión».",
   }[app] || "";
-  return `Hola, soy DeepSeek AI. Dime qué quieres hacer y lo haré directamente en ${app}.\nEjemplos: ${ex}`;
+  return `Hola, soy Plumia ✒️. Dime qué quieres hacer y lo haré directamente en ${app}.\nEjemplos: ${ex}`;
 }
 function newChat() {
   history = [];

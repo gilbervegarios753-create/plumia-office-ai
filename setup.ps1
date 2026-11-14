@@ -1,4 +1,4 @@
-# Instala "DeepSeek AI for Word" como complemento de Word (catálogo de confianza).
+# Instala "Plumia" como complemento de Word, Excel y PowerPoint (catálogo de confianza).
 # Uso: powershell -ExecutionPolicy Bypass -File setup.ps1
 $ErrorActionPreference = "Stop"
 $src     = $PSScriptRoot
@@ -36,10 +36,10 @@ foreach ($s in 16, 32, 80) {
 
 Write-Host "3/5 Certificado HTTPS de localhost (Word exige HTTPS)"
 $pfx = Join-Path $certDir "localhost.pfx"
-$cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.FriendlyName -eq "DeepSeek AI for Word localhost" } | Select-Object -First 1
+$cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.FriendlyName -eq "Plumia localhost" } | Select-Object -First 1
 if (-not $cert) {
   $cert = New-SelfSignedCertificate -DnsName "localhost" -CertStoreLocation Cert:\CurrentUser\My `
-    -FriendlyName "DeepSeek AI for Word localhost" -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048 `
+    -FriendlyName "Plumia localhost" -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048 `
     -KeyExportPolicy Exportable -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.1")
 }
 Export-PfxCertificate -Cert $cert -FilePath $pfx -Password (ConvertTo-SecureString $pass -AsPlainText -Force) | Out-Null
