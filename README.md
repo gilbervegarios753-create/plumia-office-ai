@@ -108,7 +108,11 @@ El servidor local arranca solo al iniciar Windows.
 
 - [x] Renombrar la interfaz a "Plumia"
 - [x] Versión alojada en la nube (sin servidor local): https://plumia-office-ai.vercel.app
-- [ ] Publicarla en Microsoft Marketplace (AppSource)
+- [ ] Publicarla en Microsoft Marketplace (AppSource) — ficha y pasos listos en [docs/marketplace/FICHA.md](docs/marketplace/FICHA.md)
+
+## ⚖️ Legal
+
+[Política de privacidad](https://plumia-office-ai.vercel.app/privacidad.html) · [Términos de uso](https://plumia-office-ai.vercel.app/terminos.html) · [Soporte](https://plumia-office-ai.vercel.app/soporte.html)
 - [ ] Cuentas de usuario y suscripción
 - [ ] Plantillas: trabajo escolar, informe, carta formal, CV
 

@@ -569,9 +569,42 @@ async function checkKey() {
   return true;
 }
 
+// ---------- Versión mínima de Office ----------
+// Las herramientas usan funciones de Office que no existen en versiones antiguas (p. ej. Word 2013).
+// En ese caso se avisa claramente en lugar de fallar al usarlas.
+const MIN_API = { Word: ["WordApi", "1.3"], Excel: ["ExcelApi", "1.4"], PowerPoint: ["PowerPointApi", "1.4"], Outlook: ["Mailbox", "1.3"] };
+function checkOfficeVersion() {
+  const need = MIN_API[hostName()];
+  if (!need || !Office.context.requirements || Office.context.requirements.isSetSupported(need[0], need[1])) return true;
+  addAction(`⚠️ Tu versión de ${hostName()} es antigua y algunas funciones de Plumia no estarán disponibles. Plumia necesita Microsoft 365, Office 2016 o posterior, o la versión web de Office.`, true);
+  return false;
+}
+
+// ---------- Consentimiento (Términos y Privacidad) ----------
+// Se pide una vez, con la casilla sin marcar; si cambia la versión de los textos se vuelve a pedir.
+const CONSENT_VERSION = "1.0";
+function hasConsent() {
+  try { return JSON.parse(localStorage.getItem("plumia_consent") || "null")?.version === CONSENT_VERSION; } catch (e) { return false; }
+}
+function showConsentIfNeeded() {
+  const need = !hasConsent();
+  $("consent").hidden = !need;
+  $("consentCheck").checked = false;
+  $("send").disabled = need;
+}
+function onConsentChange() {
+  if ($("consentCheck").checked) {
+    localStorage.setItem("plumia_consent", JSON.stringify({ version: CONSENT_VERSION, date: new Date().toISOString() }));
+    $("consent").hidden = true;
+    $("send").disabled = false;
+    setStatus("¡Listo! Ya puedes pedirle cosas a Plumia.");
+  }
+}
+
 async function send() {
   const text = $("prompt").value.trim();
   if (!text) return;
+  if (!hasConsent()) { showConsentIfNeeded(); return setStatus("Para empezar, acepta los Términos de uso y la Política de privacidad.", true); }
   if (!(await checkKey())) return;
   $("prompt").value = "";
   await agentTurn(text);
@@ -642,6 +675,9 @@ Office.onReady((info) => {
     b.onclick = () => { $("prompt").value = QUICK[b.dataset.action] || ""; send(); };
   });
   $("send").onclick = send;
+  $("consentCheck").onchange = onConsentChange;
+  showConsentIfNeeded();
+  checkOfficeVersion();
   $("prompt").addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
   });

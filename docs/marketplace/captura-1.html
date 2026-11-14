@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Plumia — captura para Microsoft Marketplace</title>
+<!-- Escena de 1366x768 para la ficha de Microsoft Marketplace: Word con el panel de Plumia.
+     El panel usa la hoja de estilos real (public/taskpane.css). -->
+<link rel="stylesheet" href="../../public/taskpane.css" />
+<style>
+  html, body { width: 1366px; height: 768px; margin: 0; padding: 0; overflow: hidden; }
+  body { display: block; font-family: "Segoe UI", system-ui, sans-serif; background: #f3f2f1; }
+  .titlebar { height: 32px; background: #185abd; color: #fff; display: flex; align-items: center; padding: 0 14px; font-size: 13px; }
+  .ribbon-tabs { height: 30px; background: #fff; border-bottom: 1px solid #e1dfdd; display: flex; align-items: center; gap: 22px; padding: 0 16px; font-size: 13px; color: #323130; }
+  .ribbon-tabs .on { color: #185abd; border-bottom: 2px solid #185abd; padding-bottom: 4px; font-weight: 600; }
+  .ribbon { height: 70px; background: #fff; border-bottom: 1px solid #e1dfdd; display: flex; align-items: center; padding: 0 16px; gap: 26px; font-size: 12px; color: #605e5c; }
+  .ribbon .grp { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .ribbon .ico { width: 30px; height: 30px; border-radius: 6px; background: #edebe9; }
+  .ribbon .plumia { border: 1px solid #c7d2fe; background: #eef2ff; border-radius: 6px; padding: 4px 10px; color: #4d6bfe; font-weight: 600; }
+  .ribbon .plumia img { width: 30px; height: 30px; display: block; margin: 0 auto 2px; }
+  .work { display: flex; height: calc(768px - 32px - 30px - 70px); }
+  .canvas { flex: 1; overflow: hidden; display: flex; justify-content: center; padding-top: 22px; }
+  .page { width: 640px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.15); padding: 46px 64px; font-family: Calibri, "Segoe UI", sans-serif; color: #222; }
+  .page h1 { font-family: "Calibri Light", Calibri, sans-serif; font-size: 30px; color: #1f3864; margin: 0 0 6px; font-weight: 400; }
+  .page h2 { font-size: 19px; color: #2f5496; margin: 18px 0 6px; font-weight: 400; }
+  .page p { font-size: 14.5px; line-height: 1.55; margin: 0 0 10px; text-align: justify; }
+  .page .new { background: #eef2ff; border-left: 3px solid #4d6bfe; padding-left: 8px; }
+  .pane { width: 380px; background: #fff; border-left: 1px solid #e1dfdd; display: flex; flex-direction: column; }
+  .pane .panebar { height: 34px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; font-size: 14px; color: #323130; border-bottom: 1px solid #edebe9; }
+  .pane .inner { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 10px; font-size: 13px; }
+  .pane #chat { flex: 1; }
+</style>
+</head>
+<body>
+  <div class="titlebar">Informe sobre el agua.docx — Word</div>
+  <div class="ribbon-tabs"><span>Archivo</span><span class="on">Inicio</span><span>Insertar</span><span>Diseño</span><span>Disposición</span><span>Referencias</span><span>Revisar</span><span>Vista</span></div>
+  <div class="ribbon">
+    <div class="grp"><div class="ico"></div>Pegar</div>
+    <div class="grp"><div class="ico"></div>Fuente</div>
+    <div class="grp"><div class="ico"></div>Párrafo</div>
+    <div class="grp"><div class="ico"></div>Estilos</div>
+    <div class="grp"><div class="ico"></div>Edición</div>
+    <div class="grp plumia"><img src="../../public/assets/icon-64.png" alt="" />Plumia</div>
+  </div>
+  <div class="work">
+    <div class="canvas"><div class="page">
+      <h1>El agua: un recurso vital</h1>
+      <h2>Introducción</h2>
+      <p class="new">El agua es indispensable para la vida y para el desarrollo de las sociedades. Aunque cubre gran parte del planeta, solo una pequeña fracción es agua dulce disponible para el consumo humano, la agricultura y la industria.</p>
+      <h2>Desarrollo</h2>
+      <p class="new">La demanda de agua crece con la población y el cambio climático altera las lluvias. Por eso es clave cuidar las fuentes, reducir el desperdicio y tratar las aguas residuales para devolverlas limpias a la naturaleza.</p>
+      <h2>Conclusión</h2>
+      <p class="new">Proteger el agua es una tarea de todos: gobiernos, empresas y personas. Pequeños cambios en casa, sumados, marcan una gran diferencia.</p>
+    </div></div>
+    <div class="pane">
+      <div class="panebar"><span>Plumia</span><span>✕</span></div>
+      <div class="inner">
+        <header><h1>✒️ Plumia <span class="tagline">tu equipo de IA</span></h1><button class="secondary small">Nuevo chat</button></header>
+        <main id="chat">
+          <div class="msg assistant">Hola, soy Plumia ✒️. Dime qué quieres hacer y lo haré directamente en Word.</div>
+          <div class="msg user">Haz un informe sobre el agua con introducción, desarrollo y conclusión</div>
+          <div class="action">👥 Equipo de 3 agentes trabajando a la vez: Introducción, Desarrollo, Conclusión</div>
+          <div class="action">✅ Agente «Introducción» terminó</div>
+          <div class="action">✅ Agente «Desarrollo» terminó</div>
+          <div class="action">✅ Agente «Conclusión» terminó</div>
+          <div class="action">✍️ Escribiendo párrafos…</div>
+          <div class="action">🎨 Dando formato…</div>
+          <div class="msg assistant">Listo: escribí el informe con título, tres apartados y estilos de Word. Si quieres cambiar algo, pídemelo o pulsa Ctrl+Z.</div>
+        </main>
+        <footer>
+          <div class="row chips"><button class="chip">Mejorar</button><button class="chip">Corregir</button><button class="chip">Resumir</button><button class="chip">Ampliar</button><button class="chip">Traducir</button></div>
+          <div class="composer"><textarea rows="2" placeholder="Pide lo que quieras y la IA lo hará en el documento…"></textarea><div class="composer-buttons"><button class="primary">Enviar</button></div></div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
