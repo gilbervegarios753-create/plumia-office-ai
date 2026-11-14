@@ -5,7 +5,7 @@
            xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
            xsi:type="TaskPaneApp">
   <Id>b5e2c8a1-6f3d-4e9b-8c7a-2d1f0e9b4a63</Id>
-  <Version>1.0.13.0</Version>
+  <Version>1.0.14.0</Version>
   <ProviderName>Plumia</ProviderName>
   <DefaultLocale>es-ES</DefaultLocale>
   <DisplayName DefaultValue="Plumia"/>
@@ -22,7 +22,7 @@
     <Host Name="Presentation"/>
   </Hosts>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://plumia-office-ai.vercel.app/taskpane.html?v=13"/>
+    <SourceLocation DefaultValue="https://plumia-office-ai.vercel.app/taskpane.html?v=14"/>
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
 
@@ -147,7 +147,7 @@
         <bt:Image id="Icon.80" DefaultValue="https://plumia-office-ai.vercel.app/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://plumia-office-ai.vercel.app/taskpane.html?v=13"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://plumia-office-ai.vercel.app/taskpane.html?v=14"/>
         <bt:Url id="Support.Url" DefaultValue="https://plumia-office-ai.vercel.app/soporte.html"/>
       </bt:Urls>
       <bt:ShortStrings>

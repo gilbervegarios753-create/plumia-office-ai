@@ -230,6 +230,36 @@ const noNativeTools = {}; // modelos que no admiten herramientas nativas
 let route = null; // modelo que está funcionando en este momento
 
 const routeKey = (r) => `${r.provider}|${r.model}`;
+
+// Servicios con el límite DIARIO gratis agotado (afecta a todos sus modelos gratis).
+// Se recuerda en el equipo para no gastar peticiones inútiles al reabrir el panel.
+const SERVICE_NAMES = { nvidia: "NVIDIA", openrouter: "OpenRouter", deepseek: "DeepSeek" };
+let exhausted = {};
+try { exhausted = JSON.parse(localStorage.getItem("plumia_exhausted") || "{}"); } catch (e) { exhausted = {}; }
+function providerExhausted(p) {
+  if (!(exhausted[p] > Date.now())) { if (exhausted[p]) { delete exhausted[p]; saveExhausted(); } return false; }
+  return true;
+}
+function saveExhausted() { try { localStorage.setItem("plumia_exhausted", JSON.stringify(exhausted)); } catch (e) { /* ignore */ } }
+function markExhausted(p, resetAt) {
+  // Sin hora de reinicio conocida, se vuelve a intentar en 3 horas.
+  exhausted[p] = Number(resetAt) > Date.now() ? Number(resetAt) : Date.now() + 3 * 3600e3;
+  saveExhausted();
+}
+const hhmm = (ms) => new Date(ms).toLocaleTimeString("es", { hour: "2-digit", minute: "2-digit" });
+// Mensaje claro cuando el servicio elegido no puede seguir hoy y no hay otro con clave.
+function quotaMessage() {
+  const names = Object.keys(exhausted).filter(providerExhausted);
+  if (!names.length) return "";
+  const p = names[0];
+  const when = hhmm(exhausted[p]);
+  const tips = {
+    openrouter: "Opciones: esperar a esa hora, añadir 10 créditos en openrouter.ai (sube el límite a 1000 al día), o poner una clave gratis de NVIDIA en Ajustes.",
+    nvidia: "Opciones: esperar a esa hora o poner una clave gratis de OpenRouter en Ajustes.",
+    deepseek: "Opciones: esperar a esa hora o usar una clave gratis de NVIDIA u OpenRouter en Ajustes.",
+  }[p] || "Opciones: esperar a esa hora o usar otra clave en Ajustes.";
+  return `Se agotó el límite diario de modelos gratis de ${SERVICE_NAMES[p] || p}. Se renueva hoy a las ${when}. ${tips}`;
+}
 // Modelos diminutos (≤4B) o solo para agentes externos: no se usan en automático.
 const TINY_MODEL = /(^|[-_/])(0\.\d+|[1-4](\.\d+)?)b([-_:]|$)|lfm-|inkling/i;
 const shortName = (m) => m.split("/").pop().replace(/:free$/, "");
@@ -252,7 +282,7 @@ const hasKey = (p) => !!keyFor(p) || !!fileKeys[p];
 // Lista ordenada de modelos a probar: el elegido, el último que funcionó y luego los gratis disponibles.
 function candidates() {
   const list = [];
-  const add = (provider, model) => { if (provider && model && hasKey(provider)) list.push({ provider, model }); };
+  const add = (provider, model) => { if (provider && model && hasKey(provider) && !providerExhausted(provider)) list.push({ provider, model }); };
   const sel = $("provider").value;
   add(sel, currentModel()); // si se eligió uno a mano, va primero
   try { const last = JSON.parse(localStorage.getItem("ai_last_ok") || "null"); if (last) add(last.provider, last.model); } catch (e) { /* ignore */ }
@@ -324,6 +354,8 @@ async function requestModel(cand, messages, defs) {
     if (!res.ok || data.error) {
       const err = new Error(data.error?.message || "Error " + res.status);
       err.status = res.status >= 400 ? res.status : 502;
+      err.quota = data.error?.quota; // "daily" = límite diario de la cuenta agotado
+      err.resetAt = data.error?.resetAt;
       throw err;
     }
     const msg = data.choices?.[0]?.message;
@@ -353,7 +385,7 @@ async function callWithFallback() {
   if (route && list.some((c) => routeKey(c) === routeKey(route))) {
     list.sort((a, b) => (routeKey(a) === routeKey(route) ? -1 : routeKey(b) === routeKey(route) ? 1 : 0));
   }
-  if (!list.length) throw new Error("No hay ningún modelo disponible ahora mismo (todos fallaron hace poco o falta la clave). Espera unos minutos o revisa la clave en Ajustes.");
+  if (!list.length) throw new Error(quotaMessage() || "No hay ningún modelo disponible ahora mismo (todos fallaron hace poco o falta la clave). Espera unos minutos o revisa la clave en Ajustes.");
   const badProviders = new Set();
   let lastErr = null;
   for (let i = 0; i < list.length; i++) {
@@ -379,6 +411,15 @@ async function callWithFallback() {
           native = false;
           continue;
         }
+        // Límite diario agotado: afecta a TODOS los modelos gratis de ese servicio, no se prueban más.
+        if (e.quota === "daily") {
+          markExhausted(cand.provider, e.resetAt);
+          badProviders.add(cand.provider);
+          if (route && route.provider === cand.provider) route = null;
+          const alt = list.slice(i + 1).find((c) => !badProviders.has(c.provider));
+          addAction(`⏳ Se agotó el límite diario gratis de ${SERVICE_NAMES[cand.provider] || cand.provider} (se renueva a las ${hhmm(exhausted[cand.provider])}).${alt ? ` Cambiando a ${SERVICE_NAMES[alt.provider]}…` : ""}`);
+          break;
+        }
         // Clave rechazada: no se prueban más modelos de ese servicio.
         // Solo un 401 indica clave mala para todo el servicio; un 403 afecta solo a ese modelo.
         if (e.status === 401) badProviders.add(cand.provider);
@@ -391,6 +432,7 @@ async function callWithFallback() {
       }
     }
   }
+  if (lastErr && lastErr.quota === "daily" && quotaMessage()) throw new Error(quotaMessage());
   throw new Error("Ningún modelo pudo responder. Último error: " + (lastErr ? lastErr.message : "desconocido"));
 }
 
@@ -404,18 +446,28 @@ async function askAnyModel(messages, startIndex, label) {
   // Cada agente empieza por un modelo distinto para repartir la carga.
   const rotated = list.slice(startIndex % list.length).concat(list.slice(0, startIndex % list.length));
   let lastErr = null;
+  let alreadyWarned = false;
   for (const cand of rotated) {
     if (cooldown[routeKey(cand)] > Date.now()) continue;
+    // Si otro agente (o este) ya detectó el límite diario del servicio, se salta todo el servicio.
+    if (providerExhausted(cand.provider)) { alreadyWarned = true; continue; }
     try {
       const msg = await requestModel(cand, messages, []);
       return { text: (msg.content || "").trim(), model: cand.model };
     } catch (e) {
       if (controller && controller.signal.aborted) throw e;
       lastErr = e;
+      if (e.quota === "daily") {
+        // Límite diario del servicio: se saltan todos sus modelos (los de este y los demás agentes).
+        markExhausted(cand.provider, e.resetAt);
+        addAction(`⏳ ${label}: se agotó el límite diario gratis de ${SERVICE_NAMES[cand.provider] || cand.provider}.`);
+        continue;
+      }
       cooldown[routeKey(cand)] = Date.now() + COOLDOWN_MS;
       addAction(`⏩ ${label}: ${shortName(cand.model)} ${e.status === 408 ? "va lento" : "falló"}; probando otro…`);
     }
   }
+  if ((alreadyWarned || (lastErr && lastErr.quota === "daily")) && quotaMessage()) throw new Error(quotaMessage());
   throw lastErr || new Error("ningún modelo respondió");
 }
 
