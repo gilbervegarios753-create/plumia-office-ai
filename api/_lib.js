@@ -56,6 +56,15 @@ function effectiveStatus(status, original) {
   return status;
 }
 
+// Límite DIARIO de la cuenta (p. ej. OpenRouter: 50 peticiones gratis al día). Afecta a todos los
+// modelos gratis del servicio, así que el panel no debe seguir probando otros: se marca con quota="daily".
+function quotaInfo(status, bodyText) {
+  if (status !== 429 || !/free-models-per-day|per[- ]day|daily/i.test(String(bodyText))) return {};
+  let resetAt;
+  try { const r = JSON.parse(bodyText).error?.metadata?.headers?.["X-RateLimit-Reset"]; if (r) resetAt = Number(r); } catch (e) { /* sin hora de reinicio */ }
+  return { quota: "daily", resetAt };
+}
+
 function sendJson(res, status, obj) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -63,4 +72,4 @@ function sendJson(res, status, obj) {
   res.end(JSON.stringify(obj));
 }
 
-module.exports = { PROVIDERS, CATALOGS, NOT_CHAT, UPSTREAM_TIMEOUT, originAllowed, resolveKey, friendlyError, effectiveStatus, sendJson };
+module.exports = { PROVIDERS, CATALOGS, NOT_CHAT, UPSTREAM_TIMEOUT, originAllowed, resolveKey, friendlyError, effectiveStatus, quotaInfo, sendJson };

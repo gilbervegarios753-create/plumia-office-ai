@@ -1,5 +1,5 @@
 // POST /api/chat — reenvía la conversación al servicio de IA elegido (versión en la nube).
-const { PROVIDERS, UPSTREAM_TIMEOUT, originAllowed, resolveKey, friendlyError, effectiveStatus, sendJson } = require("./_lib");
+const { PROVIDERS, UPSTREAM_TIMEOUT, originAllowed, resolveKey, friendlyError, effectiveStatus, quotaInfo, sendJson } = require("./_lib");
 
 const MAX_BODY = 4 * 1024 * 1024; // 4 MB por petición
 
@@ -45,7 +45,9 @@ module.exports = async (req, res) => {
       let original = text.slice(0, 300);
       try { const j = JSON.parse(text); original = (j.error && j.error.message) || j.detail || j.title || original; } catch (e) { /* no es JSON */ }
       const status = effectiveStatus(upstream.status, original);
-      return sendJson(res, status, { error: { message: `Error ${status} del servicio: ${friendlyError(status, provider, original)}`, code: status } });
+      const q = quotaInfo(status, text);
+      const message = q.quota ? "límite diario de modelos gratis alcanzado en este servicio." : friendlyError(status, provider, original);
+      return sendJson(res, status, { error: { message: `Error ${status} del servicio: ${message}`, code: status, ...q } });
     }
     res.statusCode = 200;
     res.setHeader("Content-Type", upstream.headers.get("content-type") || "application/json");

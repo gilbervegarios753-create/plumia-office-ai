@@ -150,7 +150,15 @@ async function proxyChat(req, res) {
       else if (status === 402) message = "este modelo es de pago y no hay saldo. Se usará otro gratis.";
       else if (status === 404) message = "ese modelo ya no está disponible.";
       else if (status === 429) message = "modelo saturado o límite gratis alcanzado; se probará otro.";
-      return res.end(JSON.stringify({ error: { message: `Error ${status} del servicio: ${message}`, code: status } }));
+      // Límite DIARIO de la cuenta (p. ej. OpenRouter: 50 peticiones gratis al día): afecta a todos los
+      // modelos gratis, así que el panel no debe seguir probando otros. Se marca con quota="daily".
+      let quota, resetAt;
+      if (status === 429 && /free-models-per-day|per[- ]day|daily/i.test(text)) {
+        quota = "daily";
+        try { const r = JSON.parse(text).error?.metadata?.headers?.["X-RateLimit-Reset"]; if (r) resetAt = Number(r); } catch (e) { /* sin hora de reinicio */ }
+        message = "límite diario de modelos gratis alcanzado en este servicio.";
+      }
+      return res.end(JSON.stringify({ error: { message: `Error ${status} del servicio: ${message}`, code: status, quota, resetAt } }));
     }
     res.writeHead(upstream.status, {
       "Content-Type": upstream.headers.get("content-type") || "application/json",
