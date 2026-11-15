@@ -25,8 +25,8 @@ async function fetchRetry(url, opts) {
 }
 
 const HINTS = {
-  nvidia: "Clave gratis: entra en <b>build.nvidia.com</b>, inicia sesión y pulsa <b>Get API Key</b>. Empieza por <b>nvapi-</b>. Si ya la pusiste en DeepSeek Harness, es la misma.",
-  openrouter: "Clave gratis, sin tarjeta: entra en <b>openrouter.ai</b> → <b>Keys → Create Key</b>. Empieza por <b>sk-or-</b>.",
+  nvidia: "⭐ <b>Recomendado</b>: sin tope diario. Clave gratis: entra en <b>build.nvidia.com</b>, inicia sesión y pulsa <b>Get API Key</b>. Empieza por <b>nvapi-</b>. Si ya la pusiste en DeepSeek Harness, es la misma.<br>💡 Pon también la de OpenRouter: si una se llena, Plumia usa la otra sola.",
+  openrouter: "Clave gratis, sin tarjeta: entra en <b>openrouter.ai</b> → <b>Keys → Create Key</b>. Empieza por <b>sk-or-</b>.<br>⚠️ Gratis permite unas <b>50 consultas al día</b> (con 10 créditos sube a 1000). Para no quedarte sin servicio, pon también una clave de <b>NVIDIA</b>.",
   deepseek: "Requiere saldo en <b>platform.deepseek.com</b>.",
 };
 const PLACEHOLDERS = { nvidia: "nvapi-...", openrouter: "sk-or-...", deepseek: "sk-..." };
@@ -254,11 +254,29 @@ function quotaMessage() {
   const p = names[0];
   const when = hhmm(exhausted[p]);
   const tips = {
-    openrouter: "Opciones: esperar a esa hora, añadir 10 créditos en openrouter.ai (sube el límite a 1000 al día), o poner una clave gratis de NVIDIA en Ajustes.",
-    nvidia: "Opciones: esperar a esa hora o poner una clave gratis de OpenRouter en Ajustes.",
-    deepseek: "Opciones: esperar a esa hora o usar una clave gratis de NVIDIA u OpenRouter en Ajustes.",
-  }[p] || "Opciones: esperar a esa hora o usar otra clave en Ajustes.";
-  return `Se agotó el límite diario de modelos gratis de ${SERVICE_NAMES[p] || p}. Se renueva hoy a las ${when}. ${tips}`;
+    openrouter: "Lo más fácil: pon una clave gratis de NVIDIA en Ajustes (no tiene tope diario y Plumia cambia sola). También puedes esperar a esa hora o añadir 10 créditos en openrouter.ai (sube el límite a 1000 al día).",
+    nvidia: "Puedes esperar a esa hora o poner además una clave gratis de OpenRouter en Ajustes: Plumia usará la otra mientras tanto.",
+    deepseek: "Puedes esperar a esa hora o usar una clave gratis de NVIDIA u OpenRouter en Ajustes.",
+  }[p] || "Puedes esperar a esa hora o usar otra clave en Ajustes.";
+  return `Tu cuenta gratuita de ${SERVICE_NAMES[p] || p} llegó a su límite diario (es un tope de ese servicio, no un fallo de Plumia). Se renueva hoy a las ${when}. ${tips}`;
+}
+
+// Aviso preventivo: OpenRouter gratis permite ~50 peticiones al día (se reinicia a medianoche UTC).
+// Se cuentan las propias para avisar antes de quedarse sin servicio, solo si no hay otra clave de respaldo.
+const WARN_AT = 40;
+function countUse(provider) {
+  if (provider !== "openrouter") return;
+  try {
+    const day = new Date().toISOString().slice(0, 10);
+    let u = JSON.parse(localStorage.getItem("plumia_use") || "{}");
+    if (u.day !== day) u = { day, n: 0, warned: false };
+    u.n++;
+    if (u.n >= WARN_AT && !u.warned && !hasKey("nvidia")) {
+      u.warned = true;
+      addAction(`⚠️ Llevas unas ${u.n} consultas gratis de OpenRouter hoy (el tope es de unas 50). Pon también una clave gratis de NVIDIA en Ajustes para no quedarte sin servicio.`);
+    }
+    localStorage.setItem("plumia_use", JSON.stringify(u));
+  } catch (e) { /* ignore */ }
 }
 // Modelos diminutos (≤4B) o solo para agentes externos: no se usan en automático.
 const TINY_MODEL = /(^|[-_/])(0\.\d+|[1-4](\.\d+)?)b([-_:]|$)|lfm-|inkling/i;
@@ -285,8 +303,13 @@ function candidates() {
   const add = (provider, model) => { if (provider && model && hasKey(provider) && !providerExhausted(provider)) list.push({ provider, model }); };
   const sel = $("provider").value;
   add(sel, currentModel()); // si se eligió uno a mano, va primero
-  try { const last = JSON.parse(localStorage.getItem("ai_last_ok") || "null"); if (last) add(last.provider, last.model); } catch (e) { /* ignore */ }
-  const order = [sel, ...["nvidia", "openrouter"].filter((p) => p !== sel)];
+  // En Automático, NVIDIA va primero si hay clave: no tiene tope diario, así que el usuario no se queda sin servicio.
+  const preferNvidia = !currentModel() && sel !== "deepseek" && hasKey("nvidia") && !providerExhausted("nvidia");
+  try {
+    const last = JSON.parse(localStorage.getItem("ai_last_ok") || "null");
+    if (last && !(preferNvidia && last.provider === "openrouter")) add(last.provider, last.model);
+  } catch (e) { /* ignore */ }
+  const order = preferNvidia ? ["nvidia", "openrouter"] : [sel, ...["nvidia", "openrouter"].filter((p) => p !== sel)];
   for (const p of order) {
     if (p === "deepseek" && p !== sel) continue; // DeepSeek oficial es de pago: solo si se eligió
     for (const [m] of MODELS[p]) add(p, m);
@@ -364,6 +387,7 @@ async function requestModel(cand, messages, defs) {
       err.status = 502;
       throw err;
     }
+    countUse(cand.provider);
     return msg;
   } catch (e) {
     if (e.name === "AbortError" || local.signal.aborted) {
